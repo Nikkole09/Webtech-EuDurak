@@ -28,7 +28,6 @@ Das Projekt wurde als Semesterarbeit für das Modul Webtechnologien entwickelt.
 ⎪        ↳ src
 ⎪        ↳ README
 ⎪        ↳ angular
-
 ⎪        ↳ ...
 ⎪
 ⎪⸻ server/ (Node.js-Frontend)
@@ -36,6 +35,9 @@ Das Projekt wurde als Semesterarbeit für das Modul Webtechnologien entwickelt.
 ⎪        ↳ .env
 ⎪        ↳ ...
 
+☕︎ Installation:
+· Im client Ordner ng serve  rennen
+· Im server Ordner npm serve rennen
 
 ☕︎ Screenshots:
 ⤖ Registrieren
@@ -49,3 +51,7 @@ Das Projekt wurde als Semesterarbeit für das Modul Webtechnologien entwickelt.
 
 ⤖ In-Game
 <img width="1896" height="908" alt="readme-game" src="https://github.com/user-attachments/assets/eb2cfca2-ed0e-49f7-a012-4b56a0d9bd27" />
+
+☕︎ KI-Hinweise
+· KI-Unterstützung mit ChatGPT genutzt für Codehilfe und Bugfixes
+· KI-Unterstützung mit Google Gemini für research der Code-Commands
