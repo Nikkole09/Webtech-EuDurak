@@ -35,6 +35,12 @@ Das Projekt wurde als Semesterarbeit für das Modul Webtechnologien entwickelt.
 ⎪        ↳ .env
 ⎪        ↳ ...
 
+☕︎ CRUD:
+· Create: Lobby erstellen
+· Read: Liste der Lobbies/ Spiele
+· Update: Karten spielen/ Lobby joinen
+· Delete: Spiel/ Lobby löschen (von dem Ersteller)
+
 ☕︎ Installation:
 · Im client Ordner ng serve  rennen
 · Im server Ordner npm serve rennen
@@ -55,3 +61,8 @@ Das Projekt wurde als Semesterarbeit für das Modul Webtechnologien entwickelt.
 ☕︎ KI-Hinweise
 · KI-Unterstützung mit ChatGPT genutzt für Codehilfe und Bugfixes
 · KI-Unterstützung mit Google Gemini für research der Code-Commands
+
+☕︎ Deployment
+· Backend: Render
+· Frontend: Vercel
+· Datenbank: Mongo Atlas
