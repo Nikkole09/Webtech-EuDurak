@@ -1,0 +1,6 @@
+﻿node_modules/
+dist/
+.tmp/
+coverage/
+cypress/videos/
+cypress/screenshots/
