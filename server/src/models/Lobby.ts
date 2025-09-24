@@ -28,7 +28,6 @@ const LobbySchema = new Schema<LobbyDoc>(
     ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     status: { type: String, enum: ['open', 'in-game', 'closed'], default: 'open' },
     players: { type: [LobbyPlayerSchema], default: [] },
-    // 👇 wichtig: im Schema vorhanden
     currentGameId: { type: Schema.Types.ObjectId, ref: 'Game', default: null },
   },
   { timestamps: true }

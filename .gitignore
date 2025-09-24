@@ -1,6 +1,23 @@
-﻿node_modules/
+﻿# Node
+node_modules/
+client/node_modules/
+server/node_modules/
+npm-debug.log*
+
+# Builds
 dist/
-.tmp/
-coverage/
-cypress/videos/
-cypress/screenshots/
+client/dist/
+server/dist/
+
+# Env/Secrets
+.env
+client/.env
+server/.env
+
+# Cypress Cache
+client/.cache/
+client/.nyc_output/
+
+# Editor
+.vscode/
+.DS_Store

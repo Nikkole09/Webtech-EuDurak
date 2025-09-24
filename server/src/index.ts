@@ -10,25 +10,39 @@ import { requireAuth, AuthRequest } from './middleware/authMiddleware';
 
 const app = express();
 
-// CORS für Angular-Devserver
-app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
+/** ---------- CORS: lokal + optional Prod-Frontend ---------- */
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN; // z. B. https://eudurak-frontend.onrender.com
+const allowedOrigins: (string | RegExp)[] = [
+  'http://localhost:4200',
+  'https://webtech-eudurak.onrender.com',
+  ...(FRONTEND_ORIGIN ? [FRONTEND_ORIGIN] : []),
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: false, // Bearer-Token, keine Cookies
+  })
+);
+
 app.use(express.json());
 
-// Routen (Reihenfolge egal, aber vor start())
+/** ---------- Routen ---------- */
 app.use('/auth', authRouter);
 app.use('/lobbies', lobbiesRouter);
 app.use('/games', gamesRouter);
 
-// Health
+/** ---------- Health ---------- */
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ ok: true, message: 'API is running (with MongoDB)' });
 });
 
-// Test-Secret
+/** ---------- Test-Secret (geschützt) ---------- */
 app.get('/secret', requireAuth, (req: AuthRequest, res: Response) => {
-  res.json({ message: `Hallo ${req.user?.username}, das ist geheim 🤫` });
+  res.json({ message: `Hallo ${req.user?.username}, das ist geheim 🤫`});
 });
 
+/** ---------- Start ---------- */
 async function start() {
   const port = Number(process.env.PORT) || 4000;
 
@@ -40,8 +54,10 @@ async function start() {
     console.error('❌ MongoDB connection failed:', err);
   }
 
+  console.log('🔓 Allowed CORS origins:', allowedOrigins);
   app.listen(port, () => {
-    console.log(`🚀 API on http://localhost:${port}`);
+    console.log(`🚀 API on http://localhost:${port}`
+    );
   });
 }
 

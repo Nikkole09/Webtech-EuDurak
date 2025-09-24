@@ -1,0 +1,185 @@
+<div class="table-grid" *ngIf="state as s">
+  <!-- SPIELER 3 (oben links) -->
+  <div class="cell tl">
+    <div class="player-field">
+      <div class="seat-title">
+        {{ oppTopLeft?.username || 'Spieler 3' }}
+        <span class="muted" *ngIf="oppTopLeft?.finished"> (hat die Runde erfolgreich beendet)</span>
+      </div>
+
+      <ng-container *ngIf="oppTopLeft as o; else tlEmpty">
+        <div class="hand hand-opponent">
+          <app-card class="card-sm" *ngFor="let _ of range(o.counts.hand)" [back]="true"></app-card>
+        </div>
+
+        <div class="stacks">
+          <div class="stack" *ngFor="let i of range(3)">
+            <app-card class="phase3" *ngIf="i < o.counts.hidden" [back]="true"></app-card>
+            <app-card class="phase2" *ngIf="i < o.open.length" [card]="o.open[i]"></app-card>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #tlEmpty><div class="seat-empty muted">frei …</div></ng-template>
+    </div>
+  </div>
+
+  <!-- SPIELER 2 (oben rechts) -->
+  <div class="cell tr">
+    <div class="player-field">
+      <div class="seat-title">
+        {{ oppTopRight?.username || 'Spieler 2' }}
+        <span class="muted" *ngIf="oppTopRight?.finished"> (hat die Runde erfolgreich beendet)</span>
+      </div>
+
+      <ng-container *ngIf="oppTopRight as o; else trEmpty">
+        <div class="hand hand-opponent right">
+          <app-card class="card-sm" *ngFor="let _ of range(o.counts.hand)" [back]="true"></app-card>
+        </div>
+
+        <div class="stacks right">
+          <div class="stack" *ngFor="let i of range(3)">
+            <app-card class="phase3" *ngIf="i < o.counts.hidden" [back]="true"></app-card>
+            <app-card class="phase2" *ngIf="i < o.open.length" [card]="o.open[i]"></app-card>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #trEmpty><div class="seat-empty muted">frei …</div></ng-template>
+    </div>
+  </div>
+
+  <!-- DU (unten links) -->
+  <div class="cell bl">
+    <div class="player-field">
+      <div class="seat-title">
+        {{ s.you.username || 'Du' }}
+        <span class="muted" *ngIf="s.you.finished"> (hat die Runde erfolgreich beendet)</span>
+      </div>
+
+      <!-- Deine Hand (Mehrfachauswahl) -->
+      <div class="hand">
+        <app-card class="card-sm"
+                  *ngFor="let c of s.you.hand"
+                  [card]="c"
+                  [selectable]="true"
+                  [selected]="selectedHandIds.has(c.id)"
+                  (cardClick)="toggleHand(c)">
+        </app-card>
+      </div>
+
+      <!-- Phase3 + Phase2 je Stack übereinander -->
+      <div class="stacks">
+        <div class="stack" *ngFor="let i of range(3)">
+          <!-- Phase 3 (verdeckt) – pro Zug exakt eine Karte aufdeckbar -->
+          <app-card class="phase3"
+                    *ngIf="i < s.you.hidden.length"
+                    [back]="previewHiddenIndex !== i"
+                    [card]="s.you.hidden[i]"
+                    [selectable]="s.phaseForYou === 'hidden'"
+                    [selected]="previewHiddenIndex === i"
+                    (cardClick)="flipHidden(i)">
+          </app-card>
+
+          <!-- Phase 2 (offen) – Mehrfachauswahl wie bei Hand -->
+          <app-card class="phase2"
+                    *ngIf="i < s.you.open.length"
+                    [card]="s.you.open[i]"
+                    [selectable]="true"
+                    [selected]="selectedOpenIdxs.has(i)"
+                    (cardClick)="toggleOpen(i)">
+          </app-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPIELER 4 (unten rechts) -->
+  <div class="cell br">
+    <div class="player-field">
+      <div class="seat-title">
+        {{ oppBottomRight?.username || 'Spieler 4' }}
+        <span class="muted" *ngIf="oppBottomRight?.finished"> (hat die Runde erfolgreich beendet)</span>
+      </div>
+
+      <ng-container *ngIf="oppBottomRight as o; else brEmpty">
+        <div class="hand hand-opponent right">
+          <app-card class="card-sm" *ngFor="let _ of range(o.counts.hand)" [back]="true"></app-card>
+        </div>
+
+        <div class="stacks right">
+          <div class="stack" *ngFor="let i of range(3)">
+            <app-card class="phase3" *ngIf="i < o.counts.hidden" [back]="true"></app-card>
+            <app-card class="phase2" *ngIf="i < o.open.length" [card]="o.open[i]"></app-card>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #brEmpty><div class="seat-empty muted">frei …</div></ng-template>
+    </div>
+  </div>
+
+  <!-- MITTLERER BALKEN -->
+  <div class="cell center">
+    <div class="center-panel">
+      <!-- Nachzieh -->
+      <div class="center-row">
+        <div class="card-col">
+          <div class="card-wrap rot90">
+            <app-card class="card-md" [back]="true"></app-card>
+          </div>
+        </div>
+        <div class="right-col"><div class="count">{{ s.drawCount }}</div></div>
+      </div>
+
+      <!-- Ablage -->
+      <div class="center-row">
+        <div class="card-col">
+          <div class="card-wrap">
+            <app-card class="card-md" [card]="s.discardTop || undefined"></app-card>
+          </div>
+        </div>
+        <div class="right-col">
+          <div>{{ s.discardTop ? '' : 'Noch keine Karte gelegt' }}</div>
+        </div>
+      </div>
+
+      <!-- Weg -->
+      <div class="center-row">
+        <div class="card-col">
+          <div class="card-wrap rot90">
+            <app-card class="card-md" [back]="true"></app-card>
+          </div>
+        </div>
+        <div class="right-col"><div class="count">{{ s.burnedCount }}</div></div>
+      </div>
+
+      <div class="status muted">
+        Am Zug: {{ s.currentTurnUsername || currentTurnName() }} · Deine Phase: {{ s.phaseForYou }}
+        <button mat-icon-button color="primary" class="ml8" (click)="refresh()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <span class="ml8" *ngIf="s.lastEventMessage">{{ s.lastEventMessage }}</span>
+      </div>
+    </div>
+
+    <!-- EIN gemeinsamer Button fürs Legen (Hand ODER Offen) + verdeckt -->
+    <div class="take-row">
+      <button class="pill btn-take" (click)="take()">Stapel nehmen</button>
+
+      <button class="pill btn-take"
+              [disabled]="(selectedHandIds.size === 0 && selectedOpenIdxs.size === 0)"
+              (click)="playSelectedCombined()">
+        Karten legen
+      </button>
+
+      <button class="pill btn-take"
+              [disabled]="previewHiddenIndex === null"
+              (click)="confirmPlayHidden()">
+        Verdeckt legen
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="error" class="error">{{ error }}</div>

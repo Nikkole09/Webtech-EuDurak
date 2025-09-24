@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
+
+:root{
+  --bg: #fbf1f2;
+  --ink: #333;
+}
+
+html, body{
+  height: 100%;
+}
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.text-center{ text-align:center; }
+.mt-8{ margin-top:8px; }
+.mt-16{ margin-top:16px; }
+
+.card{
+  width: 118px;
+  height: auto;
+  display: inline-block;
+}

@@ -1,0 +1,101 @@
+<!-- Header -->
+<div class="header-bar">
+  <div class="title">Europäischer Durak</div>
+  <div class="welcome">Hallo {{ username }}, bereit zu gewinnen?</div>
+  <button mat-stroked-button class="pill" color="warn" (click)="logout()">Logout</button>
+</div>
+
+<div class="lobbies-container">
+
+  <!-- Hinweis auf laufendes Spiel, falls ich Mitglied bin -->
+  <div *ngIf="myInGameLobby" class="banner">
+    <div>
+      Du bist in einem laufenden Spiel:
+      <strong>{{ myInGameLobby.name }}</strong>
+    </div>
+    <button mat-stroked-button class="pill" color="primary" (click)="goToGame()">
+      Zum Spiel
+    </button>
+  </div>
+
+  <!-- Eingabeleiste als Formular -->
+  <form class="create-row" [formGroup]="form" (ngSubmit)="create()">
+    <div class="lobby-input-bar">
+      <input
+        type="text"
+        placeholder="Lobbyname"
+        formControlName="name"
+      />
+      <button
+        mat-stroked-button
+        class="pill"
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid || loading"
+      >
+        Erstellen
+      </button>
+    </div>
+  </form>
+
+  <!-- Fehler -->
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Lobbys (nur offene) -->
+  <div class="lobby-list">
+    <div class="lobby-card" *ngFor="let l of openLobbies">
+      <div class="lobby-info">
+        <div class="lobby-title">{{ l.name }}</div>
+        <div class="lobby-meta">
+          Spieler: {{ l.players.length }} – Status: {{ l.status }}
+        </div>
+      </div>
+
+      <div class="lobby-actions">
+        <!-- Beitreten: nur wenn ich NICHT drin bin -->
+        <button
+          *ngIf="!isMember(l)"
+          mat-stroked-button
+          class="pill"
+          color="primary"
+          (click)="join(l._id)"
+        >
+          Beitreten
+        </button>
+
+        <!-- Start: nur Owner, nur wenn ≥ 2 Spieler -->
+        <button
+          *ngIf="isOwner(l) && l.players.length >= 2"
+          mat-stroked-button
+          class="pill"
+          color="accent"
+          (click)="start(l._id)"
+        >
+          Start
+        </button>
+
+        <!-- Verlassen: nur wenn ich drin bin -->
+        <button
+          *ngIf="isMember(l)"
+          mat-stroked-button
+          class="pill"
+          color="warn"
+          (click)="leave(l._id)"
+        >
+          Verlassen
+        </button>
+
+        <!-- Löschen: nur Owner -->
+        <button
+          *ngIf="isOwner(l)"
+          mat-stroked-button
+          class="pill"
+          color="warn"
+          (click)="remove(l._id)"
+        >
+          Löschen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

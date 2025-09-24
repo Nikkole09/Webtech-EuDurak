@@ -1,23 +1,19 @@
 import mongoose, { Schema, Types } from 'mongoose';
-
 export interface DBCard {
-  id: string;                // z.B. "10S"
-  rank: number;              // 2..14
+  id: string;               
+  rank: number;             
   suit: 'C' | 'D' | 'H' | 'S';
 }
-
 export interface DBPlayer {
   userId: Types.ObjectId;
   username: string;
   hand: DBCard[];
   open: DBCard[];
   hidden: DBCard[];
-  // NEU:
-  revealedHidden?: DBCard | null;  // umgedrehte Karte aus Phase 3, noch nicht gelegt
-  flippedThisTurn?: boolean;       // in diesem Zug bereits umgedreht
-  finished?: boolean;              // hat die Runde erfolgreich beendet
+  revealedHidden?: DBCard | null;  
+  flippedThisTurn?: boolean;       
+  finished?: boolean;              
 }
-
 export interface DBGame {
   lobbyId: Types.ObjectId;
   drawPile: DBCard[];
@@ -25,14 +21,13 @@ export interface DBGame {
   burnedPile: DBCard[];
   players: DBPlayer[];
   turnIndex: number;
-  phase: 'hand' | 'open' | 'hidden';  // globale Phase (vereinfacht)
+  phase: 'hand' | 'open' | 'hidden';  
   handSize: number;
-  lastEventMessage?: string;          // Meldungen („10 hat verbrannt“, Durak, …)
+  lastEventMessage?: string;         
   status?: 'active' | 'ended';
   createdAt: Date;
   updatedAt: Date;
 }
-
 const CardSchema = new Schema<DBCard>(
   {
     id: { type: String, required: true },
@@ -41,7 +36,6 @@ const CardSchema = new Schema<DBCard>(
   },
   { _id: false }
 );
-
 const PlayerSchema = new Schema<DBPlayer>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -55,7 +49,6 @@ const PlayerSchema = new Schema<DBPlayer>(
   },
   { _id: false }
 );
-
 const GameSchema = new Schema<DBGame>(
   {
     lobbyId: { type: Schema.Types.ObjectId, ref: 'Lobby', required: true },
@@ -71,5 +64,4 @@ const GameSchema = new Schema<DBGame>(
   },
   { timestamps: true }
 );
-
 export default mongoose.model<DBGame>('Game', GameSchema);

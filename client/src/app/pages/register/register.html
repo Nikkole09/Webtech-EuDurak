@@ -1,0 +1,26 @@
+<div class="auth-card">
+  <h2>Registrieren</h2>
+
+  <form (ngSubmit)="submit()" [formGroup]="form">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Passwort (min. 6)</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="full" [disabled]="loading">
+      {{ loading ? 'Bitte warten…' : 'Registrieren' }}
+    </button>
+
+    <div *ngIf="msg" style="color:#2e7d32;margin-top:8px">{{ msg }}</div>
+    <div *ngIf="error" style="color:#c62828;margin-top:8px">{{ error }}</div>
+
+    <p style="margin-top:12px">
+      Schon Account? <a routerLink="/login">Login</a>
+    </p>
+  </form>
+</div>

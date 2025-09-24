@@ -5,7 +5,6 @@ import User from '../models/User';
 
 const r = Router();
 
-// Registrierung: POST /auth/register
 r.post('/register', async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password || password.length < 6) {
@@ -20,7 +19,6 @@ r.post('/register', async (req, res) => {
   }
 });
 
-// Login: POST /auth/login
 r.post('/login', async (req, res) => {
   const { username, password } = req.body || {};
   const user = await User.findOne({ username });

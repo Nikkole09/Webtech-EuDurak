@@ -1,0 +1,29 @@
+<div class="auth-bg">
+  <div class="auth-card">
+    <h1 class="title">Anmelden</h1>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="form">
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Username</mat-label>
+        <input matInput name="username" [(ngModel)]="username" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Passwort</mat-label>
+        <input matInput [type]="hidePw ? 'password' : 'text'" name="password" [(ngModel)]="password" required />
+        <button mat-icon-button matSuffix type="button" (click)="hidePw = !hidePw" [attr.aria-label]="'toggle'">
+          <mat-icon>{{ hidePw ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="action" type="submit">Login</button>
+
+      <div class="hint">
+        Kein Account?
+        <a routerLink="/register">Jetzt registrieren</a>
+      </div>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+    </form>
+  </div>
+</div>

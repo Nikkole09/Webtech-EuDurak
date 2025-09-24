@@ -1,0 +1,15 @@
+.card {
+  display: inline-block;
+  width: 72px; 
+  user-select: none;
+  transition: transform .12s ease, box-shadow .12s ease, outline-color .12s ease;
+  border-radius: 8px;
+}
+
+.is-selectable { cursor: pointer; }
+.is-selected {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  outline: 3px solid #a49ca8;
+  outline-offset: 2px;
+}

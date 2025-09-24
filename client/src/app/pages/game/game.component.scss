@@ -1,0 +1,168 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: url('/assets/Hintergrund.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* --- GRID --- */
+.table-grid {
+  height: calc(100vh - 8px);
+  width: 99vw;
+  display: grid;
+  grid-template-areas:
+    "tl center tr"
+    "bl center br";
+  grid-template-columns: 1fr 0.8fr 1fr;
+  grid-template-rows: 0.92fr 0.92fr;
+  gap: 20px;
+  padding: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* verhindert, dass Inhalte in den Zellen „drücken“ */
+.cell { min-height: 0; }
+.cell.tl { grid-area: tl; }
+.cell.tr { grid-area: tr; }
+.cell.bl { grid-area: bl; }
+.cell.br { grid-area: br; }
+.cell.center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* nicht voll mittig */
+}
+
+/* --- Panels --- */
+.player-field,
+.center-panel {
+  background: #f5edef;
+  border: 2px solid #a49ca8;
+  border-radius: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.08);
+}
+
+.player-field {
+  height: calc(100% - 20px);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seat-title { font-weight: 600; margin-bottom: 2px; }
+.seat-empty { padding: 10px 6px; font-style: italic; }
+.muted { opacity: .75; }
+.right { align-items: flex-end; text-align: right; }
+
+/* Karten-Größen */
+app-card.card-sm { width: 82px; display: inline-block; }
+.center-panel app-card.card-md { width: 106px; display: inline-block; }
+
+/* --- Handkarten: immer überlappend, kein Spielfeld-Ausweiten --- */
+.hand,
+.hand-opponent {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 100%;
+  overflow: hidden; /* verhindert, dass Felder breiter werden */
+}
+
+.hand app-card.card-sm + app-card.card-sm,
+.hand-opponent app-card.card-sm + app-card.card-sm {
+  margin-left: -50px; /* Überlappungseffekt */
+}
+
+/* ====== PHASE 2 + 3: übereinander ====== */
+.stacks {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 33px;
+  box-sizing: border-box;
+  gap: 50px;
+  min-width: 260px;
+}
+
+.stack {
+  position: relative;
+  width: 72px;
+  height: 100px;
+}
+
+.stack .phase3,
+.stack .phase2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+}
+
+.stack .phase3 { z-index: 1; }
+.stack .phase2 { z-index: 2; transform: translateY(-2px); }
+
+/* --- Zentrum --- */
+.center-panel {
+  width: min(520px, 95%);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+  margin-top: 145px;
+}
+
+.center-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  column-gap: 16px;
+  min-height: 114px;
+}
+
+.card-col { display: grid; place-items: center; }
+.right-col { display: flex; align-items: center; }
+.card-wrap { display: grid; place-items: center; }
+.rot90 { transform: rotate(90deg); }
+.count { font-weight: 800; font-size: 1rem; }
+
+.status { text-align: center; margin-top: 4px; }
+.ml8 { margin-left: 8px; }
+
+.take-row {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Pill-Button */
+.pill.btn-take {
+  border-radius: 9999px;
+  padding: 6px 16px;
+  font-weight: 600;
+  border: 2px solid #a49ca8;
+  background: #fff;
+  color: #a49ca8;
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .12s ease;
+}
+.pill.btn-take:hover {
+  background: #a49ca8;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  app-card.card-sm { width: 66px; }
+  .stack { width: 66px; height: 92px; }
+  .stacks { padding: 0 16px; min-width: 230px; }
+  .center-panel app-card.card-md { width: 90px; }
+  .table-grid { gap: 18px; padding: 10px; }
+}

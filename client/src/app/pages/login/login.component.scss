@@ -1,0 +1,19 @@
+.auth-bg{
+  min-height:100vh;
+  background: url('/assets/Hintergrund.png') center/cover no-repeat fixed;
+  display:grid; place-items:center; padding:16px;
+}
+.auth-card{
+  width:min(420px, 95vw);
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  border:2px solid #a49ca8;
+  padding:22px 20px;
+}
+.title{ margin:6px 0 12px; text-align:center; font-weight:700; letter-spacing:.2px; }
+.form{ display:flex; flex-direction:column; gap:14px; }
+.full{ width:100%; }
+.action{ width:100%; margin-top:4px; }
+.hint{ text-align:center; margin-top:6px; }
+.error{ color:#c62828; margin-top:8px; text-align:center; }
