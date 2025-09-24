@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-const API_URL = 'https://webtech-eudurak.onrender.com';
+import { API_BASE } from './api';
+
 interface LoginResponse {
   token: string;
-  username?: string; 
-  sub?: string;      
+  username?: string;
+  sub?: string;
 }
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient) {}
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -24,9 +27,10 @@ export class AuthService {
     this.setToken(null);
     localStorage.removeItem('username');
   }
+
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${API_URL}/auth/login`, { username, password })
+      .post<LoginResponse>(`${API_BASE}/auth/login`, { username, password })
       .pipe(
         tap((res) => {
           if (res?.token) {
@@ -37,9 +41,11 @@ export class AuthService {
         })
       );
   }
+
   register(username: string, password: string): Observable<any> {
-    return this.http.post(`${API_URL}/auth/register`, { username, password });
+    return this.http.post(`${API_BASE}/auth/register`, { username, password });
   }
+
   getUsername(): string | null {
     return (
       localStorage.getItem('username') ||
@@ -47,6 +53,7 @@ export class AuthService {
       null
     );
   }
+
   getProfile(): { id: string; username: string } | null {
     const token = this.getToken();
     if (!token) return null;
@@ -57,6 +64,7 @@ export class AuthService {
       username: payload.username ?? localStorage.getItem('username') ?? '',
     };
   }
+
   private decodeJwt(token: string): any | null {
     try {
       const parts = token.split('.');
@@ -67,8 +75,10 @@ export class AuthService {
       return null;
     }
   }
-  authHeaders(): any {
+
+  authHeaders(): { headers: HttpHeaders } {
     const t = this.getToken();
-    return t ? { headers: { Authorization: `Bearer ${t}` } } : {};
+    const headers = new HttpHeaders(t ? { Authorization: `Bearer ${t}` } : {});
+    return { headers };
   }
 }

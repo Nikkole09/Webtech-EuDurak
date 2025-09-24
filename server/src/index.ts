@@ -14,7 +14,6 @@ const app = express();
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN; // z. B. https://eudurak-frontend.onrender.com
 const allowedOrigins: (string | RegExp)[] = [
   'http://localhost:4200',
-  'https://webtech-eudurak.onrender.com',
   ...(FRONTEND_ORIGIN ? [FRONTEND_ORIGIN] : []),
 ];
 
